@@ -3,17 +3,16 @@ import { AppContext } from '../context/AppContext';
 
 const Currency = () => {
     const { currency, dispatch } = useContext(AppContext);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleCurrencyChange = (event) => {
-
-
+    const handleCurrencyChange = (currency) => {
         dispatch({ 
             type: "CHG_CURRENCY",
-            payload: event.target.value,
+            payload: currency,
         });
     }
 
-    const currencylabel = () => {
+    const currencyLabel = () => {
         switch (currency) {
             case "$":
               return "$ Dollar";
@@ -27,14 +26,61 @@ const Currency = () => {
               return "";
           }
     }
-    return (<div class="dropdown">
-    <button class="dropbtn">Currency {currencylabel()} </button>
-    <div class="dropdown-content">
-      <button> 
-      $ Dollar
-      </button>
-    </div>
-  </div>);
+    return (
+        <div id="currency-menu" className="dropdown" style={{ cursor: "pointer" }}>
+          <button
+            id="currency-menu-button"
+            className="btn dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style={{ backgroundColor: "#93e399", color: "#fff" }}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            Currency {"("}
+            {currencyLabel()}
+            {")"}
+          </button>
+          <ul className={`custom-menu dropdown-menu ${isOpen ? "show" : ""} `}>
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => handleCurrencyChange("$")}
+              >
+                $ Dollar
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => handleCurrencyChange("£")}
+              >
+                £ Pound
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => handleCurrencyChange("€")}
+              >
+                € Euro
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => handleCurrencyChange("₹")}
+              >
+                ₹ Ruppee
+              </button>
+            </li>
+          </ul>
+        </div>
+      );
 
 }
 export default Currency;
